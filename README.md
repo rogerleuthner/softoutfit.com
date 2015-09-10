@@ -6,7 +6,9 @@ clone softoutfit.com
 
 %npm install grunt-contrib-copy
 
-%npm install -g bower
+%npm install bower
+
+%bower install bootstrap
 
 %grunt
 
