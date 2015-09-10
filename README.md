@@ -17,6 +17,7 @@ clone softoutfit.com
 %cd dist
 
 %npm install connect
+
 %npm install serve-static
 
 %node server.js
