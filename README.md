@@ -6,7 +6,9 @@ clone softoutfit.com
 
 %npm install grunt-contrib-copy
 
-%npm install -g bower
+%npm install bower
+
+%bower install bootstrap
 
 %grunt
 
@@ -15,6 +17,7 @@ clone softoutfit.com
 %cd dist
 
 %npm install connect
+
 %npm install serve-static
 
 %node server.js
