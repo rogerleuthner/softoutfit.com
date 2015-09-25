@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+   <title>Weight &amp; Balance Calculator Mooney Ovation N72TF</title>
+   <meta name="Content-Language" content="en-US">
+  
+<style type="text/css">
+img.bug
+{
+   position: relative;
+   left: 0px;
+   top: 0px;
+   margin: 0px;
+   padding: 0px;
+}
+</style>
+
+
+<script type="text/javascript">
+  // ALL THE EDITABLE VARIABLES SPECIFIC TO THE AC TO INITIATE
+  // OR RESET THE FIELDS TO DEFAULT VALUES FOLLOW: *************
+  // This data comes from AC current W & B records and
+  // Airplane Flight Manual/'POH' or Type Certificate Data Sheet.
+
+  var ACmodel = "Mooney Ovation";
+  var Nnumber = "N72TF";
+  var fuel1galmax = "89";      // max useable fuel, gallons - ref.
+  var bagg1max = "120";        // maximum baggagge 1, lbs. - ref.
+  var bagg2max = "10";         // maximum baggagge 2, lbs. - ref.
+
+  // values for AC max gross weight and maneuvering speed at max gross
+  maxwt = 3368;
+  Vam = 126;                   // kts
+
+function initWB() {
+  // This function - December 2003 - Robert A. Booty
+  // http://home.new.rr.com/trumpetb/alph/
+  var df = document.forms[0];  // reduce clutter
+
+  df.ew.value = 2357.7;          // from AC current W&B records
+  df.ewarm.value = 45.7;       // from AC current W&B records
+
+  df.f1w.value = 170;          // front seats
+  df.f2w.value = 125;
+  df.f1arm.value = 36.0;
+
+  df.fuel1gal.value = 50;      // 'gallons' fuel is a convenient input
+  df.fuel1arm.value = 49.23;
+
+  df.r1w.value = 0;          // rear seats
+  df.r2w.value = 0;
+  df.r1arm.value = 73.0;
+
+  df.bag1w.value = 30;         // baggage
+  df.bag1arm.value = 101.5;
+
+  df.bag2w.value = 10;         // baggage
+  df.bag2arm.value = 131.0;
+
+  // ********** END EDITABLE SPECIFIC DEFAULT VALUES ***********
+  // make a GIF for the load limits chart and calibrate x and y in WB_Plot function.
+
+  doCalc();
+}
+function WB_Plot(weight, arm)
+  {
+  // This function --> credit David Williams page:
+  // http://www.dmjwilliams.co.uk/gbsep_weight_balance.htm
+
+  // Left axis 40 in. margin on the wbmooney.gif is 52 pixels.
+  // 52 in. on the wbmooney.gif graph is 447 pixels.
+  // 52-40=12 in., 447-52=395 px., 395/12=32.91 px/inx cal. factor...
+
+  var x = Math.round(52 + (arm - 40) * 32.91) - 16;    //16 is 1/2 bug dia.
+
+  // Bottom axis 2000 lb. on the wb182R.gif is 231 pixels.
+  // 3500 lb. on the wb182R.gif graph is 13 pixel.
+  // 3500-2000=1500 lb., 231-13=218 px. ...
+
+  var y = 231 - Math.round(((weight - 2000) / 1500) * 218) - 16;
+
+  with (document.images.bugImage.style)
+    {
+    left = x + 'px';
+    top  = y + 'px';
+    visibility = "visible";
+    }
+  }
+
+
+function doCalc() {
+  // This function - March, 2001 - Robert A. Booty
+  // last revised December 10, 2003 - R.A.B.
+  // http://home.new.rr.com/trumpetb/alph/
+  var df = document.forms[0];   // reduce clutter
+
+  var ew = df.ew.value;
+  var ewarm = df.ewarm.value;
+  var ewmom = ew * ewarm;
+  df.ewmom.value = Math.round(ewmom);
+
+  var f1w = df.f1w.value;
+  var f2w = df.f2w.value;
+  var f1arm = df.f1arm.value;
+  var f1mom = -1 * (-f1w - f2w) * f1arm;
+  df.f1mom.value = Math.round(f1mom);
+
+  var fuel1gal = df.fuel1gal.value;
+  var fuel1w = fuel1gal * 5.82;
+  df.fuel1w.value = Math.round(fuel1w);
+  var fuel1arm = df.fuel1arm.value;
+  var fuelmom = fuel1w * fuel1arm;
+  df.fuelmom.value = Math.round(fuelmom);
+
+  var r1w = df.r1w.value;
+  var r2w = df.r2w.value;
+  var r1arm = df.r1arm.value;
+  var r1mom = -1 * (-r1w - r2w) * r1arm;
+  df.r1mom.value = Math.round(r1mom);
+
+  var bag1w = df.bag1w.value;
+  var bag1arm = df.bag1arm.value;
+  var bag1mom = bag1w * bag1arm;
+  df.bag1mom.value = Math.round(bag1mom);
+
+  var bag2w = df.bag2w.value;
+  var bag2arm = df.bag2arm.value;
+  var bag2mom = bag2w * bag2arm;
+  df.bag2mom.value = Math.round(bag2mom);
+
+  var totmom = -1 * (-ewmom -f1mom -fuelmom -r1mom -bag1mom -bag2mom);
+  df.totmom.value = Math.round(totmom);
+
+  var totwt = -1 * (-ew -f1w -f2w -fuel1w -r1w -r2w -bag1w -bag2w);
+  df.totwt.value = Math.round(totwt);
+
+  var totarm = totmom / totwt;
+  df.totarm.value = Math.round(totarm*100)/100;
+
+  // Decrease in Va with decrease in weight based on approximation of:
+  // decrease Va by half the percentage that the total weight is below maximum.
+  var Vva = Vam - ((((maxwt - totwt) / maxwt) / 2) * Vam);
+  df.Vva.value = Math.round(Vva);
+  var w1 = 3368 * 1;
+  var c1 = 46 * 1;
+  var w2 = 3300 * 1;
+  var c2 = 44 * 1;
+  var w3 = 2430 * 1;
+  var c3 = 41 * 1;
+  var burnt  = Math.round((totwt - 3200)/6.0);
+  var overt  = Math.round(totwt - 3368.0);
+
+  document.getElementById( 'endurance' ).value = fuel1gal/document.getElementById( 'GPH' ).value;
+ 
+  
+  // Show the bug on the graph...
+  WB_Plot(df.totwt.value, df.totarm.value);
+// WARNINGS
+if  (parseFloat(Math.round(totwt))>3368) {
+        var message = "\nBased on the provided data,\n"
+            message += "this aircraft will be overweight at takeoff!\n"
+       alert(message + "By " + overt + " lbs. ")
+        inuse_flag = false
+    }
+if  (parseFloat(Math.round(totwt))>3200) {
+        var message = "\nBased on the provided data,\n"
+        message += "this aircraft will be overweight at landing!\n"
+        message += "allow flight time for fuel burn-off to 3200 before landing!\n"
+        alert(message + "You need to burn-off " + burnt + " gls.")
+        inuse_flag = false
+    }
+if  (parseFloat(Math.round(totarm*100)/100)>51.0) {
+        var message = "\nBased on the provided data,\n"
+        message += "The takeoff CG may be AFT of limits\n"
+        message += "for this aircraft. Please check the\n"
+        message += "CG limitations as it applies to the\n"
+        message += "weight and category of your flight.\n"
+        alert(message)
+        inuse_flag = false
+    }
+
+if  ( (parseFloat(Math.round(totarm*100)/100)>c2)&&
+         (parseFloat(Math.round(totarm*100)/100)<c1) &&
+          (parseFloat(Math.round(totwt))> (w1 - ((w1-w2)/(c1-c2))*c1 + ((w1-w2)/(c1-c2))*(parseFloat(Math.round(totarm*100)/100)))))
+            {
+        var message = "\nBased on the provided data,\n"
+        message += "The takeoff CG may be FWD of limits\n"
+        message += "for this aircraft. Please check the\n"
+        message += "CG limitations as it applies to the\n"
+        message += "weight and category of your flight.WC1\n"
+        alert(message)
+        inuse_flag = false
+    }
+if  ( (parseFloat(Math.round(totarm*100)/100)>c3)&&
+         (parseFloat(Math.round(totarm*100)/100)<c2) &&
+          (parseFloat(Math.round(totwt))> (w2 - ((w2-w3)/(c2-c3))*c2 + ((w2-w3)/(c2-c3))*(parseFloat(Math.round(totarm*100)/100)))))
+            {
+        var message = "\nBased on the provided data,\n"
+        message += "The takeoff CG may be FWD of limits\n"
+        message += "for this aircraft. Please check the\n"
+        message += "CG limitations as it applies to the\n"
+        message += "weight and category of your flight.WC2\n"
+        alert(message)
+        inuse_flag = false
+    }
+ }
+
+</script>
+
+<script>
+function lanzarurl(url,ancho,alto) {
+window.open(url,"laventana","scrollbars=yes,width=" + ancho + ",height=" + alto + ",menubar=no");
+}
+</script></head>
+
+
+<body onload="initWB();" link="#0000dd" text="#000000" vlink="#bb0000">
+<a name="top"></a>
+
+<center>
+  <h2>
+
+<form action="">
+<table border="0" cellpadding="0" cellspacing="0" width="510"><tbody><tr><td align="center">
+<table bgcolor="#ffffcc" border="1" cellpadding="1" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td colspan="2" bgcolor="#ffcccc"><small><b>Form default data is for 
+<script type="text/javascript">
+document.write(Nnumber);
+</script>
+<br><b>Check accuracy of data!</b></b></small></td>
+
+<td><b>&nbsp;Weight&nbsp;
+<br>(lbs)</b></td>
+
+<td><b>Arm
+<br>(inches)</b></td>
+
+<td bgcolor="#dddddd"><b>Moment
+<br>(in-lb)</b></td>
+</tr>
+
+<tr>
+<td colspan="2"><b>&nbsp;Empty Weight</b></td>
+
+<td align="center"><input value="2357.7" size="6" name="ew" type="text"></td>
+
+<td align="center"><input value="45.7" size="7" name="ewarm" type="text"></td>
+
+<td align="center" bgcolor="#dddddd"><input value="107747" size="8" name="ewmom" type="text"></td>
+</tr>
+
+
+
+<tr>
+              <td colspan="2">&nbsp;<b>Pilot Seats R &amp; L</b></td>
+
+<td align="center" bgcolor="#ffff33"><input value="195" size="6" name="f1w" type="text">&nbsp;<input value="160" size="6" name="f2w" type="text"></td>
+
+<td align="center"><input value="36" size="7" name="f1arm" type="text"></td>
+
+<td align="center" bgcolor="#dddddd"><input value="12780" size="8" name="f1mom" type="text"></td>
+</tr>
+
+<tr>
+              <td colspan="2">&nbsp;<b>Rear Passanger Seats R &amp; L</b></td>
+
+<td align="center" bgcolor="#ffff33"><input value="0" size="6" name="r1w" type="text">&nbsp;<input value="0" size="6" name="r2w"  type="text"></td>
+
+<td align="center"><input value="73" size="7" name="r1arm"  type="text"></td>
+
+<td align="center" bgcolor="#dddddd"><input value="0" size="8" name="r1mom" type="text"></td>
+</tr>
+<tr>
+<td>&nbsp;<b>Fuel <small>(<script type="text/javascript"><!--
+document.write(fuel1galmax); //--></script> max)</small></b></td>
+
+<td align="center" bgcolor="#ffff33">gal: <input value="60" size="4" name="fuel1gal"  type="text"></td>
+
+<td align="center" bgcolor="#dddddd"><input value="360" size="6" name="fuel1w" type="text"></td>
+
+<td align="center"><input value="49.23" size="7" name="fuel1arm" type="text"></td>
+
+<td align="center" bgcolor="#dddddd"><input value="17723" size="8" name="fuelmom" type="text"></td>
+</tr>
+<tr>
+<td colspan="2">&nbsp;<b>Baggage 1 <small>(<script type="text/javascript"><!--
+document.write(bagg1max); //--></script> lb max)</small></b></td>
+
+<td align="center" bgcolor="#ffff33"><input value="30" size="6" name="bag1w"  type="text"></td>
+
+<td align="center"><input value="101.5" size="7" name="bag1arm" type="text"></td>
+
+<td align="center" bgcolor="#dddddd"><input value="3045" size="8" name="bag1mom" type="text"></td>
+</tr>
+
+<tr>
+<td colspan="2">&nbsp;<b>Baggage 2 <small>(<script type="text/javascript"><!--
+document.write(bagg2max); //--></script> lb max)</small></b></td>
+
+<td align="center" bgcolor="#ffff33"><input value="10" size="6" name="bag2w" type="text"></td>
+
+<td align="center"><input value="131" size="7" name="bag2arm" type="text"></td>
+
+<td align="center" bgcolor="#dddddd"><input value="1310" size="8" name="bag2mom" type="text"></td>
+</tr>
+
+<tr bgcolor="#aaaaaa">
+<td colspan="2">&nbsp;</td>
+
+<td colspan="3">
+&nbsp; <input name="doit" value="&nbsp;Calculate&nbsp;" onclick="doCalc()" type="button"> &nbsp;
+<input name="undoit" value="Reset" onclick="initWB()" type="button"></td>
+</tr>
+
+<tr bgcolor="#ffcc33">
+<td colspan="2">&nbsp;<b>Gross Weight <small>(<script type="text/javascript"><!--
+document.write(maxwt); //--></script> lb max):</small></b></td>
+
+<td align="center"><input value="3113" size="6" name="totwt" type="text"></td>
+
+<td>&nbsp;</td>
+
+<td align="center" bgcolor="#dddddd"><input value="142605" size="9" name="totmom" type="text"></td>
+</tr>
+
+<tr bgcolor="#ffcc33">
+<td colspan="3">&nbsp;<b>Loaded Center of Gravity:</b></td>
+
+<!-- ?? maxlength='5' is a workaround to mask a
+      Math.round(totarm*100)/100 bug in IE 5 with +oilarm values -->
+<td align="center"><input value="45.81" size="7" name="totarm" maxlength="5" type="text"></td>
+
+<td bgcolor="#dddddd">&nbsp;</td>
+</tr>
+
+<tr bgcolor="#ccccff">
+<td colspan="2"><b>&nbsp;Maneuvering speed, Va <small>(kts):</small></b></td>
+
+<td align="center"><input value="121" size="6" name="Vva" type="text"></td>
+
+<td colspan="2" align="left"><small>&nbsp;&lt;=(decr. with decr. wt.)</small></td>
+</tr>
+
+
+<tr bgcolor="#ccccff">
+<td colspan="2"><b>&nbsp;Endurance <small>(hours):</small></b></td>
+
+<td align="center"><input id="endurance" value="0" size="6" name="Endurance" type="text"></td>
+<td colspan="2" align="left"><input id="GPH" value="12" size="6" type="text">&nbsp;GPH</td>	
+
+</tr>
+
+
+</tbody></table>
+
+</td></tr>
+<tr><td>
+<small>Calculated <b>Gross Weight</b> and <b>C.G.</b> point must lie within the utility or normal category envelope limits per the <i><b>Airplane Flight Manual,</b></i></small>
+</td></tr>
+<tr><td>
+
+<p>
+<table bgcolor="#ffffff" border="1" cellpadding="3" cellspacing="0" width="100%">
+<tbody><tr><td>
+<br>
+  <div style="background-image:  url(wbmooney.gif);
+    width: 460px; height: 270px;">
+    <img style="left: 227px; top: 53px; visibility: visible;" id="bugImage" class="bug" src="bug.gif" alt="" height="32" width="32">
+  </div>
+</td>
+</tr>
+</tbody></table>
+</p></td></tr></tbody></table></form>
+
+
+  <center>
+</center>
+</center>
+</body></html>
