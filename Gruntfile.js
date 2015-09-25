@@ -75,6 +75,12 @@ module.exports = function (grunt) {
           expand: true,
           dest: 'dist/fun',
           flatten: true
+        },	
+        refs: {
+          src:['theme/refs/*'],
+          expand: true,
+          dest: 'dist/refs',
+          flatten: true
         },		
         theme: {
             src:['theme/*.css'],
@@ -113,7 +119,7 @@ module.exports = function (grunt) {
     grunt.task.run(['concat', 'less:dist', 'clean:build',
       compress ? 'compress:'+lessDest+':'+'<%=builddir%>' + '/bootstrap.min.css':'none']);
     grunt.task.run(['copy:index','copy:menu1','copy:openflightgps', 'copy:privacy',
-		'copy:stat', 'copy:fun', 'copy:theme','copy:support']);
+		'copy:stat', 'copy:fun', 'copy:refs', 'copy:theme','copy:support']);
   });
 
   grunt.registerTask('compress', 'compress a generic css', function(fileSrc, fileDst) {

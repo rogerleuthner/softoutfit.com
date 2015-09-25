@@ -30,6 +30,7 @@ document.write( '\
                 <li class="divider"></li>\
                 <li><a href="/openflightgps/index.html">OpenFlightGPS</a></li>\
 				<li><a href="/fun/index.html">Fun</a></li>\
+				<li><a href="/refs/index.html">References</a></li>\
                 <li><a data-toggle="modal" href="#budda">Help</a></li>\
               </ul>\
             </li>\
