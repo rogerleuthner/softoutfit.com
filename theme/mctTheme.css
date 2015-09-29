@@ -24,6 +24,11 @@ section:before {
 	background-color: #FF8080;
 }
 
+.open > .dropdown-menu {
+	border-radius: 6px 6px 6px 6px;
+}
+
+
 .jumbotron {
 	margin-top: 70px;
 	border-radius: 6px;
