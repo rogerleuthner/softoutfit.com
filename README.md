@@ -23,3 +23,5 @@ clone softoutfit.com
 %node server.js
 
 browse to http://localhost:8080
+
+note that a few of the files (reference .PDF's) are not found in github due to licensing issues
