@@ -10,6 +10,23 @@ document.write( '\
 			</div>\
 		</div>\
 	</div>\
+	<div id="contact" class="modal fade" role="dialog" style="top:25% !important;overflow-y: auto !important;">\
+		<div class="modal-dialog">\
+			<div class="modal-content">\
+				<form style="padding: 20px;" id="mailform" method="post">\
+					<div class="form-group">\
+						<label for="email">Email address:</label>\
+						<input type="email" class="form-control" id="from">\
+					</div>\
+					<div class="form-group">\
+						<label for="message">Message:</label>\
+						<input type="text" class="form-control" id="message">\
+					</div>\
+					<input type="submit" data-dismiss="modal" class="btn btn-default" onclick="sendContact()"></input>\
+				</form>\
+			</div>\
+		</div>\
+	</div>\
 \
     <div class="navbar navbar-default navbar-fixed-top">\
       <div class="container  pull-left">\
@@ -32,6 +49,7 @@ document.write( '\
 				<li><a href="/fun/index.html">Fun</a></li>\
 				<li><a href="/refs/index.html">References</a></li>\
                 <li><a data-toggle="modal" href="#budda">Help</a></li>\
+				<li><a data-toggle="modal" href="#contact">Contact</a></li>\
               </ul>\
             </li>\
             <li>\
@@ -39,6 +57,9 @@ document.write( '\
             </li>\
             <li>\
               <a data-toggle="modal" href="#budda">Help</a>\
+            </li>\
+            <li>\
+              <a data-toggle="modal" href="#contact">Contact</a>\
             </li>\
           </ul>\
 \
