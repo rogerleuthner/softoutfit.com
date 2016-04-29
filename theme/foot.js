@@ -1,4 +1,4 @@
-document.write( '\
+﻿document.write( '\
 	<footer class="footer">\
      <div class="navbar navbar-default navbar-fixed-bottom">\
       <div class="container">\
@@ -14,11 +14,9 @@ document.write( '\
               </ul>\
             </li>\
           </ul>\
-\
           <ul class="nav navbar-nav navbar-right">\
-            <li><a href="https://github.com/rogerleuthner/" target="_blank">Sources</a></li>\
+            <li><a href="https://github.com/rogerleuthner/" target="_blank">Sources ©Roger B. Leuthner, 2000-2017</a></li>\
           </ul>\
-\
         </div>\
       </div>\
     </div>\
